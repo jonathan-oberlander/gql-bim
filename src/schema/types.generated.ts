@@ -3,6 +3,7 @@ import type {
   GraphQLScalarType,
   GraphQLScalarTypeConfig,
 } from 'graphql'
+import type { UserMapper } from './user/schema.mappers'
 export type Maybe<T> = T | null | undefined
 export type InputMaybe<T> = T | null | undefined
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -197,7 +198,7 @@ export type ResolversTypes = {
   DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>
   Mutation: ResolverTypeWrapper<Record<PropertyKey, never>>
   Query: ResolverTypeWrapper<Record<PropertyKey, never>>
-  User: ResolverTypeWrapper<User>
+  User: ResolverTypeWrapper<UserMapper>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>
 }
 
@@ -209,7 +210,7 @@ export type ResolversParentTypes = {
   DateTime: Scalars['DateTime']['output']
   Mutation: Record<PropertyKey, never>
   Query: Record<PropertyKey, never>
-  User: User
+  User: UserMapper
   Boolean: Scalars['Boolean']['output']
 }
 

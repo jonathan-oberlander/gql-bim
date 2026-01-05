@@ -4,5 +4,5 @@ export const user: NonNullable<QueryResolvers['user']> = async (
   _arg,
   _ctx,
 ) => {
-  /* Implement Query.user resolver logic here */
+  return { id: '001', firstName: 'Bart', lastName: 'Simpson', isAdmin: 'YES' }
 }
