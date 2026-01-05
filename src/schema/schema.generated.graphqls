@@ -1,0 +1,21 @@
+type Book {
+  id: ID!
+  isbn: String!
+}
+
+scalar DateTime
+
+type Mutation {
+  markBookAsRead(id: ID!): Book!
+}
+
+type Query {
+  book(id: ID!): Book
+  user(id: ID!): User
+}
+
+type User {
+  fullName: String!
+  id: ID!
+  isAdmin: Boolean!
+}
