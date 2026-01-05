@@ -5,6 +5,8 @@ import { typeDefs } from './schema/typeDefs.generated'
 
 const yoga = createYoga({
   schema: createSchema({ typeDefs, resolvers }),
+  graphqlEndpoint: '/graphql',
+  landingPage: false
 })
 
 const server = createServer(yoga)

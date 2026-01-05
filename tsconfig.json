@@ -45,5 +45,5 @@
     "moduleResolution": "bundler",
     "skipLibCheck": true
   },
-  "exclude": ["node_modules", "codegen.ts"]
+  "exclude": ["codegen.ts", "dist", "node_modules"]
 }
