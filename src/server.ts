@@ -1,3 +1,4 @@
+import { useGraphQlJit } from '@envelop/graphql-jit'
 import {
   type FastifyBaseLogger,
   type FastifyReply,
@@ -38,7 +39,7 @@ function buildApp(logging = true) {
   })
 
   const graphQLServer = createYoga<ServerContext, GraphQLContext>({
-    plugins: [useExecutionCancellation()],
+    plugins: [useGraphQlJit(), useExecutionCancellation()],
     schema: createSchema<GraphQLSchemaWithContext>({
       typeDefs,
       resolvers,
