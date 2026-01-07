@@ -3,6 +3,7 @@ import type {
   GraphQLScalarType,
   GraphQLScalarTypeConfig,
 } from 'graphql'
+import type { GraphQLContext } from '../server'
 import type { UserMapper } from './user/schema.mappers'
 export type Maybe<T> = T | null | undefined
 export type InputMaybe<T> = T | null | undefined
@@ -215,7 +216,7 @@ export type ResolversParentTypes = {
 }
 
 export type BookResolvers<
-  ContextType = any,
+  ContextType = GraphQLContext,
   ParentType extends
     ResolversParentTypes['Book'] = ResolversParentTypes['Book'],
 > = {
@@ -229,7 +230,7 @@ export interface DateTimeScalarConfig
 }
 
 export type MutationResolvers<
-  ContextType = any,
+  ContextType = GraphQLContext,
   ParentType extends
     ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation'],
 > = {
@@ -242,7 +243,7 @@ export type MutationResolvers<
 }
 
 export type QueryResolvers<
-  ContextType = any,
+  ContextType = GraphQLContext,
   ParentType extends
     ResolversParentTypes['Query'] = ResolversParentTypes['Query'],
 > = {
@@ -261,7 +262,7 @@ export type QueryResolvers<
 }
 
 export type UserResolvers<
-  ContextType = any,
+  ContextType = GraphQLContext,
   ParentType extends
     ResolversParentTypes['User'] = ResolversParentTypes['User'],
 > = {
@@ -270,7 +271,7 @@ export type UserResolvers<
   isAdmin?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
 }
 
-export type Resolvers<ContextType = any> = {
+export type Resolvers<ContextType = GraphQLContext> = {
   Book?: BookResolvers<ContextType>
   DateTime?: GraphQLScalarType
   Mutation?: MutationResolvers<ContextType>
