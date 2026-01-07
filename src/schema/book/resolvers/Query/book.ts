@@ -4,5 +4,9 @@ export const book: NonNullable<QueryResolvers['book']> = async (
   _arg,
   _ctx,
 ) => {
-  /* Implement Query.book resolver logic here */
+  const greeting = await fetch('http://localhost:9876/greeting').then((res) =>
+    res.json(),
+  )
+
+  return greeting
 }
