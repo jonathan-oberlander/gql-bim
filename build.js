@@ -1,17 +1,17 @@
-import esbuild from 'esbuild'
+import esbuild from "esbuild";
 
 esbuild
   .build({
-    entryPoints: ['src/server.ts'], // Your main entry file
-    bundle: true, // Combine all imports into one file
-    minify: true, // Shrink the code
-    sourcemap: true, // Helpful for debugging production logs
-    platform: 'node', // Target Node.js environment
-    target: ['node22'], // Adjust to your Node version
-    outfile: 'dist/index.js', // Output location
-    format: 'esm', // Generate modern ESM code
-    // Some dependencies (like GraphQL) don't bundle well;
-    // you can mark them as external if needed:
-    external: ['fsevents'],
+    entryPoints: ["src/server.ts"],
+    bundle: true,
+    minify: true,
+    sourcemap: true,
+    platform: "node",
+    target: ["node22"],
+    outfile: "dist/index.js",
+    format: "esm",
+    // THIS IS THE KEY:
+    // It tells esbuild to leave node_modules and built-ins alone
+    packages: "external",
   })
-  .catch(() => process.exit(1))
+  .catch(() => process.exit(1));
