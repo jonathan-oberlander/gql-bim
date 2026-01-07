@@ -1,9 +1,6 @@
-import { createLogger } from 'graphql-yoga'
 import { NotFoundError } from '../../../../error/notFound'
 import type { QueryResolvers } from './../../../types.generated'
 import type { UserMapper } from '../../schema.mappers'
-
-const logger = createLogger('debug')
 
 const users: UserMapper[] = [
   { id: '001', firstName: 'Luke', lastName: 'Skywalker', isAdmin: 'YES' },
@@ -12,17 +9,17 @@ const users: UserMapper[] = [
 ]
 
 export const user: NonNullable<QueryResolvers['user']> = async (
-  _parent,
-  _arg,
-  _ctx,
+  _,
+  arg,
+  { customerId, log },
 ) => {
-  logger.info('[customerId]', _ctx.customerId)
+  log.info({ customerId, userId: arg.id }, 'Fetching user details')
 
-  const user = users.find((user) => user.id === _arg.id)
+  const user = users.find((user) => user.id === arg.id)
 
   if (!user) {
     throw new NotFoundError(
-      `User with id '${_arg.id}' not found.`,
+      `User with id '${arg.id}' not found.`,
       {
         xtc: 'u mad?',
       },
