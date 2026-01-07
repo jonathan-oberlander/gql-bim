@@ -10,8 +10,6 @@ esbuild
     target: ["node22"],
     outfile: "dist/index.js",
     format: "esm",
-    // THIS IS THE KEY:
-    // It tells esbuild to leave node_modules and built-ins alone
-    packages: "external",
+    packages: "external", // esbuild will leave node_modules and built-ins alone
   })
   .catch(() => process.exit(1));

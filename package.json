@@ -10,7 +10,7 @@
     "codegen": "npx graphql-codegen && npm run lint",
     "dev": "NODE_ENV=development tsx watch src/server.ts",
     "lint": "biome check --write --diagnostic-level=error src",
-    "start": "node dist/index.js",
+    "start": "NODE_ENV=production node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

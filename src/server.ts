@@ -104,7 +104,10 @@ function buildApp(logging = true) {
 const { app, endpoint } = buildApp(true)
 
 app
-  .listen({ port: 4000 })
+  .listen({
+    port: Number(process.env.PORT) || 4000, // provided by the environment
+    host: '0.0.0.0', // Necessary for Docker/Cloud environments
+  })
   .then((serverUrl) => {
     app.log.info(`GraphQL API located at ${serverUrl}${endpoint}`)
   })
