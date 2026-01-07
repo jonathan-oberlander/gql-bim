@@ -38,10 +38,21 @@ export type Scalars = {
   DateTime: { input: Date | string; output: Date | string }
 }
 
+export type Author = {
+  __typename?: 'Author'
+  firstName: Scalars['String']['output']
+  id: Scalars['ID']['output']
+  isPenName: Scalars['Boolean']['output']
+  lastName: Scalars['String']['output']
+}
+
 export type Book = {
   __typename?: 'Book'
+  genre: Scalars['String']['output']
   id: Scalars['ID']['output']
   isbn: Scalars['String']['output']
+  name: Scalars['String']['output']
+  read: Scalars['Boolean']['output']
 }
 
 export type Mutation = {
@@ -55,8 +66,13 @@ export type MutationmarkBookAsReadArgs = {
 
 export type Query = {
   __typename?: 'Query'
+  author?: Maybe<Author>
   book?: Maybe<Book>
   user?: Maybe<User>
+}
+
+export type QueryauthorArgs = {
+  id: Scalars['ID']['input']
 }
 
 export type QuerybookArgs = {
@@ -193,26 +209,39 @@ export type DirectiveResolverFn<
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  Book: ResolverTypeWrapper<Book>
-  ID: ResolverTypeWrapper<Scalars['ID']['output']>
+  Author: ResolverTypeWrapper<Author>
   String: ResolverTypeWrapper<Scalars['String']['output']>
+  ID: ResolverTypeWrapper<Scalars['ID']['output']>
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>
+  Book: ResolverTypeWrapper<Book>
   DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>
   Mutation: ResolverTypeWrapper<Record<PropertyKey, never>>
   Query: ResolverTypeWrapper<Record<PropertyKey, never>>
   User: ResolverTypeWrapper<UserMapper>
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>
 }
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  Book: Book
-  ID: Scalars['ID']['output']
+  Author: Author
   String: Scalars['String']['output']
+  ID: Scalars['ID']['output']
+  Boolean: Scalars['Boolean']['output']
+  Book: Book
   DateTime: Scalars['DateTime']['output']
   Mutation: Record<PropertyKey, never>
   Query: Record<PropertyKey, never>
   User: UserMapper
-  Boolean: Scalars['Boolean']['output']
+}
+
+export type AuthorResolvers<
+  ContextType = GraphQLContext,
+  ParentType extends
+    ResolversParentTypes['Author'] = ResolversParentTypes['Author'],
+> = {
+  firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+  isPenName?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
+  lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>
 }
 
 export type BookResolvers<
@@ -220,8 +249,11 @@ export type BookResolvers<
   ParentType extends
     ResolversParentTypes['Book'] = ResolversParentTypes['Book'],
 > = {
+  genre?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   isbn?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  read?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
 }
 
 export interface DateTimeScalarConfig
@@ -247,6 +279,12 @@ export type QueryResolvers<
   ParentType extends
     ResolversParentTypes['Query'] = ResolversParentTypes['Query'],
 > = {
+  author?: Resolver<
+    Maybe<ResolversTypes['Author']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryauthorArgs, 'id'>
+  >
   book?: Resolver<
     Maybe<ResolversTypes['Book']>,
     ParentType,
@@ -272,6 +310,7 @@ export type UserResolvers<
 }
 
 export type Resolvers<ContextType = GraphQLContext> = {
+  Author?: AuthorResolvers<ContextType>
   Book?: BookResolvers<ContextType>
   DateTime?: GraphQLScalarType
   Mutation?: MutationResolvers<ContextType>

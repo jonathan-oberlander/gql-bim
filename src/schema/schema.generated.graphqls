@@ -1,6 +1,16 @@
+type Author {
+  firstName: String!
+  id: ID!
+  isPenName: Boolean!
+  lastName: String!
+}
+
 type Book {
+  genre: String!
   id: ID!
   isbn: String!
+  name: String!
+  read: Boolean!
 }
 
 scalar DateTime
@@ -10,6 +20,7 @@ type Mutation {
 }
 
 type Query {
+  author(id: ID!): Author
   book(id: ID!): Book
   user(id: ID!): User
 }

@@ -1,0 +1,10 @@
+extend type Query {
+  author(id: ID!): Author
+}
+
+type Author {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  isPenName: Boolean!
+}
