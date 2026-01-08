@@ -1,0 +1,7 @@
+type Query {
+  cookie(name: String!): String
+}
+
+type Mutation {
+  setCookie(name: String!, value: String!): String
+}

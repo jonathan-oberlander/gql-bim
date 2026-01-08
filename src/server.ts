@@ -1,5 +1,6 @@
 import { useGraphQlJit } from '@envelop/graphql-jit'
-import { useDisableIntrospection } from '@graphql-yoga/plugin-disable-introspection'
+import { useResponseCache } from '@graphql-yoga/plugin-response-cache'
+import { useCookies } from '@whatwg-node/server-plugin-cookies'
 import {
   type FastifyBaseLogger,
   type FastifyReply,
@@ -15,17 +16,17 @@ import {
 import { resolvers } from './schema/resolvers.generated'
 import { typeDefs } from './schema/typeDefs.generated'
 
-export interface ServerContext {
+type ServerContext = {
   req: FastifyRequest
   reply: FastifyReply
 }
 
-export interface GraphQLContext {
+type GraphQLContext = {
   customerId: string | string[] | undefined
   log: FastifyBaseLogger
 }
 
-type GraphQLSchemaWithContext = ServerContext &
+export type GraphQLSchemaWithContext = ServerContext &
   GraphQLContext &
   YogaInitialContext
 
@@ -45,7 +46,14 @@ export function buildApp(logging = true) {
     plugins: [
       useGraphQlJit(),
       useExecutionCancellation(),
-      useDisableIntrospection(),
+      useResponseCache({
+        ttl: 60_000,
+        session: (_, context: GraphQLSchemaWithContext) => {
+          // This ensures User A never gets User B's cache
+          return context.customerId ? String(context.customerId) : null
+        },
+      }),
+      useCookies(),
     ],
     schema: createSchema<GraphQLSchemaWithContext>({ typeDefs, resolvers }),
     logging: {

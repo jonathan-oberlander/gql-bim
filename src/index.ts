@@ -1,9 +1,9 @@
 import { buildApp } from './server'
 
-const [server, endpoint] = buildApp(true)
-
 const port = Number(process.env.PORT) || 4000 // provided by the environment
 const host = '0.0.0.0' // Necessary for Docker/Cloud environments
+
+const [server, endpoint] = buildApp(true)
 
 server
   .listen({ port, host })

@@ -3,7 +3,7 @@ import type {
   GraphQLScalarType,
   GraphQLScalarTypeConfig,
 } from 'graphql'
-import type { GraphQLContext } from '../server'
+import type { GraphQLSchemaWithContext } from '../server'
 import type { UserMapper } from './user/schema.mappers'
 export type Maybe<T> = T | null | undefined
 export type InputMaybe<T> = T | null | undefined
@@ -58,16 +58,23 @@ export type Book = {
 export type Mutation = {
   __typename?: 'Mutation'
   markBookAsRead: Book
+  setCookie?: Maybe<Scalars['String']['output']>
 }
 
 export type MutationmarkBookAsReadArgs = {
   id: Scalars['ID']['input']
 }
 
+export type MutationsetCookieArgs = {
+  name: Scalars['String']['input']
+  value: Scalars['String']['input']
+}
+
 export type Query = {
   __typename?: 'Query'
   author?: Maybe<Author>
   book?: Maybe<Book>
+  cookie?: Maybe<Scalars['String']['output']>
   user?: Maybe<User>
 }
 
@@ -77,6 +84,10 @@ export type QueryauthorArgs = {
 
 export type QuerybookArgs = {
   id: Scalars['ID']['input']
+}
+
+export type QuerycookieArgs = {
+  name: Scalars['String']['input']
 }
 
 export type QueryuserArgs = {
@@ -234,7 +245,7 @@ export type ResolversParentTypes = {
 }
 
 export type AuthorResolvers<
-  ContextType = GraphQLContext,
+  ContextType = GraphQLSchemaWithContext,
   ParentType extends
     ResolversParentTypes['Author'] = ResolversParentTypes['Author'],
 > = {
@@ -245,7 +256,7 @@ export type AuthorResolvers<
 }
 
 export type BookResolvers<
-  ContextType = GraphQLContext,
+  ContextType = GraphQLSchemaWithContext,
   ParentType extends
     ResolversParentTypes['Book'] = ResolversParentTypes['Book'],
 > = {
@@ -262,7 +273,7 @@ export interface DateTimeScalarConfig
 }
 
 export type MutationResolvers<
-  ContextType = GraphQLContext,
+  ContextType = GraphQLSchemaWithContext,
   ParentType extends
     ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation'],
 > = {
@@ -272,10 +283,16 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationmarkBookAsReadArgs, 'id'>
   >
+  setCookie?: Resolver<
+    Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationsetCookieArgs, 'name' | 'value'>
+  >
 }
 
 export type QueryResolvers<
-  ContextType = GraphQLContext,
+  ContextType = GraphQLSchemaWithContext,
   ParentType extends
     ResolversParentTypes['Query'] = ResolversParentTypes['Query'],
 > = {
@@ -291,6 +308,12 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QuerybookArgs, 'id'>
   >
+  cookie?: Resolver<
+    Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType,
+    RequireFields<QuerycookieArgs, 'name'>
+  >
   user?: Resolver<
     Maybe<ResolversTypes['User']>,
     ParentType,
@@ -300,7 +323,7 @@ export type QueryResolvers<
 }
 
 export type UserResolvers<
-  ContextType = GraphQLContext,
+  ContextType = GraphQLSchemaWithContext,
   ParentType extends
     ResolversParentTypes['User'] = ResolversParentTypes['User'],
 > = {
@@ -309,7 +332,7 @@ export type UserResolvers<
   isAdmin?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
 }
 
-export type Resolvers<ContextType = GraphQLContext> = {
+export type Resolvers<ContextType = GraphQLSchemaWithContext> = {
   Author?: AuthorResolvers<ContextType>
   Book?: BookResolvers<ContextType>
   DateTime?: GraphQLScalarType

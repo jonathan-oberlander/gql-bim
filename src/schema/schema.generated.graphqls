@@ -17,11 +17,13 @@ scalar DateTime
 
 type Mutation {
   markBookAsRead(id: ID!): Book!
+  setCookie(name: String!, value: String!): String
 }
 
 type Query {
   author(id: ID!): Author
   book(id: ID!): Book
+  cookie(name: String!): String
   user(id: ID!): User
 }
 
