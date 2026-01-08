@@ -8,7 +8,7 @@
     "build": "node build.js",
     "check": "tsc --noEmit",
     "codegen": "npx graphql-codegen && npm run lint",
-    "dev": "NODE_ENV=development tsx watch src/server.ts",
+    "dev": "NODE_ENV=development tsx watch src/index.ts",
     "lint": "biome check --write --diagnostic-level=error src",
     "start": "NODE_ENV=production node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"

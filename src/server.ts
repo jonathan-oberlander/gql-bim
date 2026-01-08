@@ -1,4 +1,5 @@
 import { useGraphQlJit } from '@envelop/graphql-jit'
+import { useDisableIntrospection } from '@graphql-yoga/plugin-disable-introspection'
 import {
   type FastifyBaseLogger,
   type FastifyReply,
@@ -28,7 +29,7 @@ type GraphQLSchemaWithContext = ServerContext &
   GraphQLContext &
   YogaInitialContext
 
-function buildApp(logging = true) {
+export function buildApp(logging = true) {
   const app = fastify({
     logger: logging && {
       transport: {
@@ -39,13 +40,14 @@ function buildApp(logging = true) {
   })
 
   const graphQLServer = createYoga<ServerContext, GraphQLContext>({
-    plugins: [useGraphQlJit(), useExecutionCancellation()],
-    schema: createSchema<GraphQLSchemaWithContext>({
-      typeDefs,
-      resolvers,
-    }),
+    landingPage: false,
     graphqlEndpoint: '/graphql',
-    landingPage: true,
+    plugins: [
+      useGraphQlJit(),
+      useExecutionCancellation(),
+      useDisableIntrospection(),
+    ],
+    schema: createSchema<GraphQLSchemaWithContext>({ typeDefs, resolvers }),
     logging: {
       debug: (...args) => {
         for (const arg of args) app.log.debug(arg)
@@ -75,10 +77,10 @@ function buildApp(logging = true) {
     done(null),
   )
 
-  const endpoint = graphQLServer.graphqlEndpoint
+  const url = graphQLServer.graphqlEndpoint
 
   app.route({
-    url: endpoint,
+    url,
     method: ['GET', 'POST', 'OPTIONS'],
     handler: async (req, reply) => {
       const response = await graphQLServer.handleNodeRequestAndResponse(
@@ -94,25 +96,11 @@ function buildApp(logging = true) {
 
       reply.status(response.status)
 
-      // reply.send can accept a ReadableStream, this avoids loading the whole response into a string.
+      // reply.send can accept a ReadableStream,
+      // this avoids loading the whole response into a string.
       return reply.send(response.body)
     },
   })
 
-  return { app, endpoint }
+  return [app, url] as const
 }
-
-const { app, endpoint } = buildApp(true)
-
-app
-  .listen({
-    port: Number(process.env.PORT) || 4000, // provided by the environment
-    host: '0.0.0.0', // Necessary for Docker/Cloud environments
-  })
-  .then((serverUrl) => {
-    app.log.info(`GraphQL API located at ${serverUrl}${endpoint}`)
-  })
-  .catch((err) => {
-    app.log.error(err)
-    process.exit(1)
-  })

@@ -2,7 +2,7 @@ import esbuild from "esbuild";
 
 esbuild
   .build({
-    entryPoints: ["src/server.ts"],
+    entryPoints: ["src/index.ts"],
     bundle: true,
     minify: true,
     sourcemap: true,
