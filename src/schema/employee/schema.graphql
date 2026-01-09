@@ -1,0 +1,11 @@
+type Employee {
+  id: ID!
+  studio: Studio!
+  firstName: String!
+  lastName: String!
+  email: String!
+  phone: String
+  role: String!
+  hireDate: Date
+  isActive: Boolean!
+}

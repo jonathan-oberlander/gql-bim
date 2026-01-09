@@ -1,0 +1,15 @@
+type PlanUsage {
+  id: ID!
+  plan: Plan!
+  booking: Booking!
+  usedCredits: Int!
+  usageDatetime: DateTime!
+}
+
+extend type Query {
+  id: ID!
+  plan: Plan!
+  booking: Booking!
+  usedCredits: Int!
+  usageDatetime: DateTime!
+}

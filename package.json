@@ -11,7 +11,8 @@
     "dev": "NODE_ENV=development tsx watch src/index.ts",
     "lint": "biome check --write --diagnostic-level=error src",
     "start": "NODE_ENV=production node dist/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "neon-push": "npx drizzle-kit push"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +20,10 @@
   "dependencies": {
     "@envelop/graphql-jit": "^11.0.0",
     "@graphql-yoga/plugin-response-cache": "^3.20.0",
+    "@neondatabase/serverless": "^1.0.2",
     "@whatwg-node/server-plugin-cookies": "^1.0.5",
+    "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.45.1",
     "fastify": "^5.6.2",
     "graphql": "^16.12.0",
     "graphql-scalars": "^1.25.0",
@@ -31,6 +35,7 @@
     "@eddeee888/gcg-typescript-resolver-files": "^0.15.0",
     "@graphql-codegen/cli": "^6.1.0",
     "@types/node": "^25.0.3",
+    "drizzle-kit": "^0.31.8",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   },

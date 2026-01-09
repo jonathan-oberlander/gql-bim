@@ -1,0 +1,31 @@
+enum PaymentStatus {
+  UNPAID
+  PAID
+  REFUNDED
+}
+
+enum BookingSource {
+  WEB
+  APP
+  STAFF
+}
+
+enum BookingStatus {
+  BOOKED
+  WAITLISTED
+  CANCELLED
+  ATTENDED
+  NO_SHOW
+}
+
+type Booking {
+  id: ID!
+  class: Class!
+  student: Student!
+  bookingDatetime: DateTime!
+  status: BookingStatus!
+  paymentStatus: PaymentStatus!
+  source: BookingSource!
+
+  planUsage: PlanUsage
+}

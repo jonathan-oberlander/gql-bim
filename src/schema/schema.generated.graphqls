@@ -1,35 +1,237 @@
-type Author {
-  firstName: String!
-  id: ID!
-  isPenName: Boolean!
-  lastName: String!
+enum BillingPeriod {
+  MONTH
+  YEAR
 }
 
-type Book {
-  genre: String!
+type Booking {
+  bookingDatetime: DateTime!
+  class: Class!
   id: ID!
-  isbn: String!
-  name: String!
-  read: Boolean!
+  paymentStatus: PaymentStatus!
+  planUsage: PlanUsage
+  source: BookingSource!
+  status: BookingStatus!
+  student: Student!
 }
+
+enum BookingSource {
+  APP
+  STAFF
+  WEB
+}
+
+enum BookingStatus {
+  ATTENDED
+  BOOKED
+  CANCELLED
+  NO_SHOW
+  WAITLISTED
+}
+
+type Class {
+  attendees(limit: Int, offset: Int): [Student!]!
+  bookings(limit: Int, offset: Int): [Booking!]!
+  capacity: Int!
+  description: String
+  endDatetime: DateTime!
+  id: ID!
+  instructor: Instructor!
+  level: ClassLevel
+  name: String!
+  price: Float!
+  startDatetime: DateTime!
+  status: ClassStatus!
+  studio: Studio!
+}
+
+enum ClassLevel {
+  ADVANCED
+  ALL_LEVELS
+  BEGINNER
+  INTERMEDIATE
+}
+
+enum ClassStatus {
+  CANCELLED
+  COMPLETED
+  SCHEDULED
+}
+
+input CreateBookingInput {
+  classId: ID!
+  studentId: ID!
+  usePlanId: ID
+}
+
+input CreatePlanInput {
+  billingPeriod: BillingPeriod
+  isRecurring: Boolean!
+  planName: String!
+  planType: PlanType!
+  pricePerPeriod: Float
+  startDate: Date!
+  studentId: ID!
+  studioId: ID
+  totalCredits: Int
+}
+
+input CreateStudentInput {
+  dateOfBirth: Date
+  email: String!
+  firstName: String!
+  lastName: String!
+  phone: String
+}
+
+scalar Date
 
 scalar DateTime
 
+type Employee {
+  email: String!
+  firstName: String!
+  hireDate: Date
+  id: ID!
+  isActive: Boolean!
+  lastName: String!
+  phone: String
+  role: String!
+  studio: Studio!
+}
+
+type Instructor {
+  bio: String
+  classes(limit: Int, offset: Int): [Class!]!
+  email: String!
+  firstName: String!
+  hireDate: Date
+  id: ID!
+  isActive: Boolean!
+  lastName: String!
+  phone: String
+}
+
 type Mutation {
-  markBookAsRead(id: ID!): Book!
+  cancelBooking(bookingId: ID!): Booking!
+  cancelPlan(planId: ID!): Plan!
+  createBooking(input: CreateBookingInput!): Booking!
+  createClass(
+    capacity: Int!
+    endDatetime: DateTime!
+    instructorId: ID!
+    level: ClassLevel
+    name: String!
+    price: Float!
+    startDatetime: DateTime!
+    studioId: ID!
+  ): Class!
+  createPlan(input: CreatePlanInput!): Plan!
+  createStudent(input: CreateStudentInput!): Student!
+  markBookingAttended(bookingId: ID!): Booking!
   setCookie(name: String!, value: String!): String
+  updateClassStatus(classId: ID!, status: ClassStatus!): Class!
+}
+
+enum PaymentStatus {
+  PAID
+  REFUNDED
+  UNPAID
+}
+
+type Plan {
+  billingPeriod: BillingPeriod
+  endDate: Date
+  id: ID!
+  isRecurring: Boolean!
+  planName: String!
+  planType: PlanType!
+  pricePerPeriod: Float
+  remainingCredits: Int
+  startDate: Date!
+  status: PlanStatus!
+  student: Student!
+  studio: Studio
+  totalCredits: Int
+  usages(limit: Int, offset: Int): [PlanUsage!]!
+}
+
+enum PlanStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+  PAUSED
+}
+
+enum PlanType {
+  CLASS_PACK
+  MEMBERSHIP
+  UNLIMITED
+}
+
+type PlanUsage {
+  booking: Booking!
+  id: ID!
+  plan: Plan!
+  usageDatetime: DateTime!
+  usedCredits: Int!
 }
 
 type Query {
-  author(id: ID!): Author
-  book(id: ID!): Book
+  booking(id: ID!): Booking!
+  bookings(
+    classId: ID
+    limit: Int
+    offset: Int
+    status: BookingStatus
+    studentId: ID
+  ): [Booking!]!
+  class(id: ID!): Class
+  classes(
+    from: DateTime
+    instructorId: ID
+    limit: Int
+    offset: Int
+    status: ClassStatus
+    studioId: ID
+    to: DateTime
+  ): [Class!]!
   cookie(name: String!): String
-  user(id: ID!): User
-  users: [User!]!
+  id: ID!
+  instructor(id: ID!): Instructor
+  instructors(limit: Int, offset: Int): [Instructor!]!
+  plan(id: ID!): Plan!
+  plans(limit: Int, offset: Int, status: PlanStatus, studentId: ID): [Plan!]!
+  student(id: ID!): Student
+  students(limit: Int, offset: Int, search: String): [Student!]!
+  studio(id: ID!): Studio
+  studios: [Studio!]!
+  usageDatetime: DateTime!
+  usedCredits: Int!
 }
 
-type User {
-  fullName: String!
+type Student {
+  bookings(limit: Int, offset: Int): [Booking!]!
+  dateOfBirth: Date
+  email: String!
+  emergencyContactName: String
+  emergencyContactPhone: String
+  firstName: String!
   id: ID!
-  isAdmin: Boolean!
+  isActive: Boolean!
+  lastName: String!
+  phone: String
+  plans(limit: Int, offset: Int): [Plan!]!
+}
+
+type Studio {
+  addressLine1: String!
+  addressLine2: String
+  city: String!
+  classes(limit: Int, offset: Int): [Class!]!
+  country: String
+  employees(limit: Int, offset: Int): [Employee!]!
+  id: ID!
+  name: String!
+  phone: String
+  postcode: String
 }

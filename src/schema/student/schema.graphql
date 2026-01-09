@@ -1,0 +1,32 @@
+type Student {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  email: String!
+  phone: String
+  dateOfBirth: Date
+  emergencyContactName: String
+  emergencyContactPhone: String
+  isActive: Boolean!
+
+  bookings(limit: Int, offset: Int): [Booking!]!
+  plans(limit: Int, offset: Int): [Plan!]!
+}
+
+extend type Query {
+  students(limit: Int, offset: Int, search: String): [Student!]!
+  student(id: ID!): Student
+}
+
+input CreateStudentInput {
+  firstName: String!
+  lastName: String!
+  email: String!
+  phone: String
+  dateOfBirth: Date
+}
+
+extend type Mutation {
+  createStudent(input: CreateStudentInput!): Student!
+  createBooking(input: CreateBookingInput!): Booking!
+}

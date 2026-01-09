@@ -1,0 +1,108 @@
+erDiagram
+
+            STUDIOS{
+                int studio_id PK
+                    string name
+                        string address_line1
+                            string address_line2
+                                string city
+                                    string postcode
+                                        string country
+                                            string phone}
+
+        INSTRUCTORS{
+            int instructor_id PK
+                string first_name
+                    string last_name
+                        string email
+                            string phone
+                                string bio
+                                    date hire_date bool is_active}
+
+        STUDENTS{
+            int student_id PK
+                string first_name
+                    string last_name
+                        string email
+                            string phone
+                                date date_of_birth
+                                    string emergency_contact_name
+                                        string emergency_contact_phone bool is_active}
+
+        EMPLOYEES{
+            int employee_id PK int studio_id FK
+                string first_name
+                    string last_name
+                        string email
+                            string phone
+                                string role
+                                    date hire_date bool is_active}
+
+        CLASSES{
+            int class_id PK int studio_id FK int instructor_id FK
+                string name
+                    string description
+                        string level
+                            datetime start_datetime
+                                datetime end_datetime int capacity
+                                    decimal price
+                                        string status}
+
+        BOOKINGS{
+            int booking_id PK int class_id FK int student_id FK
+                datetime booking_datetime
+                    string status
+                        string payment_status
+                            string source}
+
+        PLANS{
+            int PLAN_id PK int student_id FK int studio_id FK
+                string plan_name
+                    string plan_type int total_credits int remaining_credits
+                        date start_date
+                            date end_date bool is_recurring
+                                decimal price_per_period
+                                    string billing_period
+                                        string status}
+
+        PLAN_USAGES{
+            int usage_id PK int PLAN_id FK int booking_id FK int used_credits
+                datetime usage_datetime}
+
+        % % Relationships
+
+                STUDIOS ||
+    --o
+{
+CLASSES:
+  "has many" INSTRUCTORS || --o
+  {
+  CLASSES:
+    "teaches" STUDIOS || --o
+    {
+    EMPLOYEES:
+      "employs" STUDIOS || --o
+      {
+      PLANS:
+        "offers (optional)"
+
+            STUDENTS ||
+            --o
+        {
+        BOOKINGS:
+          "makes" CLASSES || --o
+          {
+          BOOKINGS:
+            "is booked in"
+
+                STUDENTS ||
+                --o
+            {
+            PLANS:
+              "owns" PLANS || --o
+              {
+              PLAN_USAGES:
+                "used in" BOOKINGS || --o
+                {
+                PLAN_USAGES:
+                  "paid by"

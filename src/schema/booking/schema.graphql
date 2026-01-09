@@ -1,0 +1,33 @@
+type Booking {
+  id: ID!
+  class: Class!
+  student: Student!
+  bookingDatetime: DateTime!
+  status: BookingStatus!
+  paymentStatus: PaymentStatus!
+  source: BookingSource!
+
+  planUsage: PlanUsage
+}
+
+extend type Query {
+  bookings(
+    classId: ID
+    studentId: ID
+    status: BookingStatus
+    limit: Int
+    offset: Int
+  ): [Booking!]!
+  booking(id: ID!): Booking
+}
+
+input CreateBookingInput {
+  classId: ID!
+  studentId: ID!
+  usePlanId: ID
+}
+
+extend type Mutation {
+  cancelBooking(bookingId: ID!): Booking!
+  markBookingAttended(bookingId: ID!): Booking!
+}

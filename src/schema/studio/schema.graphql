@@ -1,0 +1,18 @@
+type Studio {
+  id: ID!
+  name: String!
+  addressLine1: String!
+  addressLine2: String
+  city: String!
+  postcode: String
+  country: String
+  phone: String
+
+  classes(limit: Int, offset: Int): [Class!]!
+  employees(limit: Int, offset: Int): [Employee!]!
+}
+
+extend type Query {
+  studios: [Studio!]!
+  studio(id: ID!): Studio
+}

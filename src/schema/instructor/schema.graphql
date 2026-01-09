@@ -1,0 +1,17 @@
+type Instructor {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  email: String!
+  phone: String
+  bio: String
+  hireDate: Date
+  isActive: Boolean!
+
+  classes(limit: Int, offset: Int): [Class!]!
+}
+
+extend type Query {
+  instructors(limit: Int, offset: Int): [Instructor!]!
+  instructor(id: ID!): Instructor
+}

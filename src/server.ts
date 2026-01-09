@@ -13,6 +13,7 @@ import {
   useExecutionCancellation,
   type YogaInitialContext,
 } from 'graphql-yoga'
+import { db } from './db'
 import { resolvers } from './schema/resolvers.generated'
 import { typeDefs } from './schema/typeDefs.generated'
 
@@ -24,6 +25,7 @@ type ServerContext = {
 type GraphQLContext = {
   customerId: string | string[] | undefined
   log: FastifyBaseLogger
+  db: typeof db
 }
 
 export type GraphQLSchemaWithContext = ServerContext &
@@ -76,6 +78,7 @@ export function buildApp(logging = true) {
       return {
         customerId,
         log: req.log,
+        db,
       }
     },
   })

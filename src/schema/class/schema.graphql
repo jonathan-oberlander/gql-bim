@@ -1,0 +1,56 @@
+type Class {
+  id: ID!
+  studio: Studio!
+  instructor: Instructor!
+  name: String!
+  description: String
+  level: ClassLevel
+  startDatetime: DateTime!
+  endDatetime: DateTime!
+  capacity: Int!
+  price: Float!
+  status: ClassStatus!
+
+  bookings(limit: Int, offset: Int): [Booking!]!
+  attendees(limit: Int, offset: Int): [Student!]!
+}
+
+enum ClassStatus {
+  SCHEDULED
+  CANCELLED
+  COMPLETED
+}
+
+extend type Query {
+  classes(
+    studioId: ID
+    instructorId: ID
+    from: DateTime
+    to: DateTime
+    status: ClassStatus
+    limit: Int
+    offset: Int
+  ): [Class!]!
+  class(id: ID!): Class
+}
+
+enum ClassLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  ALL_LEVELS
+}
+
+extend type Mutation {
+  createClass(
+    studioId: ID!
+    instructorId: ID!
+    name: String!
+    startDatetime: DateTime!
+    endDatetime: DateTime!
+    capacity: Int!
+    price: Float!
+    level: ClassLevel
+  ): Class!
+  updateClassStatus(classId: ID!, status: ClassStatus!): Class!
+}

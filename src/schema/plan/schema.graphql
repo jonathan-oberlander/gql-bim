@@ -1,0 +1,57 @@
+enum PlanType {
+  UNLIMITED
+  CLASS_PACK
+  MEMBERSHIP
+}
+
+enum PlanStatus {
+  ACTIVE
+  PAUSED
+  CANCELLED
+  EXPIRED
+}
+
+enum BillingPeriod {
+  MONTH
+  YEAR
+}
+
+type Plan {
+  id: ID!
+  student: Student!
+  studio: Studio
+  planName: String!
+  planType: PlanType!
+  totalCredits: Int
+  remainingCredits: Int
+  startDate: Date!
+  endDate: Date
+  isRecurring: Boolean!
+  pricePerPeriod: Float
+  billingPeriod: BillingPeriod
+  status: PlanStatus!
+
+  usages(limit: Int, offset: Int): [PlanUsage!]!
+}
+
+extend type Query {
+  plans(studentId: ID, status: PlanStatus, limit: Int, offset: Int): [Plan!]!
+  plan(id: ID!): Plan
+}
+
+input CreatePlanInput {
+  studentId: ID!
+  studioId: ID
+  planName: String!
+  planType: PlanType!
+  totalCredits: Int
+  startDate: Date!
+  isRecurring: Boolean!
+  pricePerPeriod: Float
+  billingPeriod: BillingPeriod
+}
+
+extend type Mutation {
+  createPlan(input: CreatePlanInput!): Plan!
+  cancelPlan(planId: ID!): Plan!
+}
