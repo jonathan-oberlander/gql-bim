@@ -10,6 +10,7 @@ import { setCookie as Mutation_setCookie } from './cookie/resolvers/Mutation/set
 import { cookie as Query_cookie } from './cookie/resolvers/Query/cookie'
 import type { Resolvers } from './types.generated'
 import { user as Query_user } from './user/resolvers/Query/user'
+import { users as Query_users } from './user/resolvers/Query/users'
 import { User } from './user/resolvers/User'
 export const resolvers: Resolvers = {
   Query: {
@@ -17,6 +18,7 @@ export const resolvers: Resolvers = {
     book: Query_book,
     cookie: Query_cookie,
     user: Query_user,
+    users: Query_users,
   },
   Mutation: {
     markBookAsRead: Mutation_markBookAsRead,

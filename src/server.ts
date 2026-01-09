@@ -47,7 +47,7 @@ export function buildApp(logging = true) {
       useGraphQlJit(),
       useExecutionCancellation(),
       useResponseCache({
-        ttl: 60_000,
+        ttl: 60_000, // Cache for 1 minute
         session: (_, context: GraphQLSchemaWithContext) => {
           // This ensures User A never gets User B's cache
           return context.customerId ? String(context.customerId) : null

@@ -76,6 +76,7 @@ export type Query = {
   book?: Maybe<Book>
   cookie?: Maybe<Scalars['String']['output']>
   user?: Maybe<User>
+  users: Array<User>
 }
 
 export type QueryauthorArgs = {
@@ -320,6 +321,7 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryuserArgs, 'id'>
   >
+  users?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>
 }
 
 export type UserResolvers<

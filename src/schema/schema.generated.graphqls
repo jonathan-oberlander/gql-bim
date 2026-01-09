@@ -25,6 +25,7 @@ type Query {
   book(id: ID!): Book
   cookie(name: String!): String
   user(id: ID!): User
+  users: [User!]!
 }
 
 type User {
